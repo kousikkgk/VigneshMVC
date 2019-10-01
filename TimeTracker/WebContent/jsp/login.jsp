@@ -1,4 +1,4 @@
-<%@include file="include.jsp"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -108,22 +108,14 @@
     </style>
 </head>
 <body>
-    <div class="logincontent">
-        <div class="loginheading">
-            Login
-        </div>
-        <label for="txtUserName">
-            Username:</label>
-        <input type="text" id="txtUserName" name="txtUserName" />
-        <label for="txtPassword">
-            Password:</label>
-        <input type="password" id="txtPassword" name="txtPassword" />
-        <div class="loginremember">
-            <input type="checkbox" id="chbRemember" name="chbRemember" /><label class="check"
-                for="chbRemember">Remember me next time</label>
-            <input type="submit" class="loginbtn" value="Login" id="btnSubmit" />
-        </div>
-    </div>
+    <form:form id="loginForm" method="post" action="login" modelAttribute="loginBean">
+ 
+            <form:label path="username">Enter your user-name</form:label>
+            <form:input id="username" name="username" path="username" /><br>
+            <form:label path="username">Please enter your password</form:label>
+            <form:password id="password" name="password" path="password" /><br>
+            <input type="submit" value="Submit" />
+        </form:form>
 </body>
 </html>
 

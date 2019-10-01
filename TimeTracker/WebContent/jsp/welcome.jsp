@@ -7,6 +7,11 @@
 <title>Welcome</title>
 </head>
 <body>
+	<p>Welcome Page</p>
 	<center>Welcome ${loggedInUser}</center>
+		<Select id="projectname" class="selectclass">
+			<option selected> Select Project</option>
+			<option>${projName}</option>
+		</Select>
 </body>
 </html>
