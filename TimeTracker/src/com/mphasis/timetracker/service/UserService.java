@@ -4,6 +4,7 @@
 package com.mphasis.timetracker.service;
 
 import java.sql.SQLException;
+import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
@@ -14,5 +15,5 @@ import javax.servlet.http.HttpSession;
 public interface UserService
 {
 		public boolean isValidUser(String username, String password) throws SQLException;
-		public String projName(HttpSession session) throws SQLException;
+		
 }

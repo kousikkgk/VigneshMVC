@@ -2,12 +2,11 @@ package com.mphasis.timetracker.viewBean;
 
 public class TimeEntryBean 
 {
-	private String projectName;
+	private String projectname;
 	private String processName;
 	private String wrkReqName;
 	private String activity;
 	private String wrkUnit;
-	
 	private double monEffort;
 	private double tueEffort;
 	private double wedEffort;
@@ -16,11 +15,11 @@ public class TimeEntryBean
 	private double satEffort;
 	private double sunEffort;
 	
-	public String getProjectName() {
-		return projectName;
+	public String getProjectname() {
+		return this.projectname;
 	}
-	public void setProjectName(String projectName) {
-		this.projectName = projectName;
+	public void setProjectname(String projectName) {
+		this.projectname = projectName;
 	}
 	public String getProcessName() {
 		return processName;
@@ -88,6 +87,5 @@ public class TimeEntryBean
 	public void setSunEffort(double sunEffort) {
 		this.sunEffort = sunEffort;
 	}
-	
 	
 }

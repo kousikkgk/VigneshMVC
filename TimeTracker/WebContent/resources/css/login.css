@@ -1,0 +1,93 @@
+body {
+	/*/* background-image: linear-gradient(to right top, #4b134f, #6f1855, #912355, #b03452, #c94b4b); */
+	/* background-image: linear-gradient(to right, #141e30, #243b55); */
+	background-image: linear-gradient(to right, #2c3e50, #4ca1af);
+	/* background-image: linear-gradient(to right, #4b134f, #6f1855, #912355, #b03452, #c94b4b); */
+	font-family: 'Ubuntu', sans-serif;
+}
+
+#loginForm {
+	background-color: #FFFFFF;
+	width: 400px;
+	height: 320px;
+	margin: 7em 58em;
+	border-radius: 1.5em;
+	box-shadow: 0px 11px 35px 2px rgba(0, 0, 0, 0.14);
+}
+
+.sign {
+	padding-top: 40px;
+	color: #8C55AA;
+	font-family: 'Ubuntu', sans-serif;
+	font-weight: bold;
+	font-size: 23px;
+}
+
+.un {
+	width: 76%;
+	color: rgb(38, 50, 56);
+	font-weight: 700;
+	font-size: 14px;
+	letter-spacing: 1px;
+	background: rgba(136, 126, 126, 0.04);
+	padding: 10px 20px;
+	border: none;
+	border-radius: 20px;
+	outline: none;
+	box-sizing: border-box;
+	border: 2px solid rgba(0, 0, 0, 0.02);
+	margin-bottom: 50px;
+	margin-left: 46px;
+	text-align: center;
+	margin-bottom: 27px;
+	font-family: 'Ubuntu', sans-serif;
+}
+
+form.form1 {
+	padding-top: 40px;
+}
+
+.pass {
+	width: 76%;
+	color: rgb(38, 50, 56);
+	font-weight: 700;
+	font-size: 14px;
+	letter-spacing: 1px;
+	background: rgba(136, 126, 126, 0.04);
+	padding: 10px 20px;
+	border: none;
+	border-radius: 20px;
+	outline: none;
+	box-sizing: border-box;
+	border: 2px solid rgba(0, 0, 0, 0.02);
+	margin-bottom: 50px;
+	margin-left: 46px;
+	text-align: center;
+	margin-bottom: 27px;
+	font-family: 'Ubuntu', sans-serif;
+}
+
+.un:focus, .pass:focus {
+	border: 2px solid rgba(0, 0, 0, 0.18) !important;
+}
+
+
+.button {
+	cursor: pointer;
+	border-radius: 5em;
+	color: #fff;
+	background-image: linear-gradient(to right, #141e30, #243b55);
+	border: 0;
+	padding-left: 40px;
+	padding-right: 40px;
+	padding-bottom: 10px;
+	padding-top: 10px;
+	font-family: 'Ubuntu', sans-serif;
+	margin-left: 35%;
+	font-size: 13px;
+	box-shadow: 0 0 20px 1px rgba(0, 0, 0, 0.04);
+}
+.button:hover
+{
+	background-image: linear-gradient(to right, #4b134f, #6f1855, #912355, #b03452, #c94b4b);
+}
