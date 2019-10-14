@@ -40,8 +40,60 @@
 				<td id="hourstotal">0</td>
 			</tr>
 		</table>
+		<table border="1">
+			<tr style="font-size: 13">
+				<td><h4 class="header4">Project</h4></td>
+				<td><h4 class="header4">Common Process</h4></td>
+				<td><h4 class="header4">Work Request</h4></td>
+				<td><h4 class="header4">Activity</h4></td>
+				<td><h4 class="header4">Work Unit</h4></td>
+				<td><h4 class="header4">Mon</h4></td>
+				<td><h4 class="header4">Tue</h4></td>
+				<td><h4 class="header4">Wed</h4></td>
+				<td><h4 class="header4">Thu</h4></td>
+				<td><h4 class="header4">Fri</h4></td>
+				<td><h4 class="header4">Sat</h4></td>
+				<td><h4 class="header4">Sun</h4></td>
+			</tr>
+			<c:forEach var="emp" items="${model}">
+				<tr style="font-size: 10">
+					<td>${emp.projectname}</td>
+					<td>${emp.processname}</td>
+					<td>${emp.requestname}</td>
+					<td>${emp.activityname}</td>
+					<td>${emp.workunitname}</td>
+					<td>${emp.mon}</td>
+					<td>${emp.tue}</td>
+					<td>${emp.wed}</td>
+					<td>${emp.thu}</td>
+					<td>${emp.fri}</td>
+					<td>${emp.sat}</td>
+					<td>${emp.sun}</td>
+				</tr>
+			</c:forEach>
+</table>	
+		<%-- <table>
+		<c:forEach var="entry" items="${model}">
+			<tr>
+				<th><c:out value="${(entry.key)}" /></th>
+			</tr>
+			<tr>
+				<td><c:out value="${entry.value}"/></td>
+			</tr>
+			</c:forEach>
+		</table> --%>
 	</fieldset>
-	<fieldset>
+	<%-- <table>
+	<c:forEach var="entry" items="${model}">
+                <tr>
+                	<th><c:out value="${(entry.key)}"/></th>
+                </tr>	
+                <tr>
+                	<td><c:out value="${entry.value}"/></td> 
+                </tr>
+     </c:forEach> 
+     </table> --%>
+	<%-- <fieldset>
 		<table class="tableclass">
 			<tr>
 				<td><h4 class="header4">Project</h4></td>
@@ -57,9 +109,29 @@
 				<td><h4 class="header4">Sat</h4></td>
 				<td><h4 class="header4">Sun</h4></td>
 			</tr>
-		</table>
-	</fieldset>	
-	<form:form id="timeentryform" method="post" action="timesave" modelAttribute="timeEntryBean">
+			
+			</table>
+			<table class="emp_list" style="background:#F6F6F6;">
+			<c:forEach var="emp" items="${model}">   
+			<tr>
+				<td>${emp.projectname}</td>
+				<td>${emp.processname}</td>
+				<td>${emp.requestname}</td>
+				<td>${emp.activityname}</td>
+				<td>${emp.workunitname}</td>
+				<td>${emp.mon}</td>
+				<td>${emp.tue}</td>
+				<td>${emp.wed}</td>
+				<td>${emp.thu}</td>
+				<td>${emp.fri}</td>
+				<td>${emp.sat}</td>
+				<td>${emp.sun}</td>
+			</tr>
+			</c:forEach> 
+			
+		</table> 
+	</fieldset> --%>
+	<form:form id="timeentryform" method="post" action="save" modelAttribute="timeEntryBean">
 	<div class="inline" id="process">
 	<fieldset>
 				<legend class="section">Project Name</legend>
@@ -89,7 +161,7 @@
 				<br>
 				<legend class="section">Work Unit</legend>
 				<form:select path="wrkUnit" class="selectclass" id="wrkunit" name="wkunitName" placeholder="WorkUnit">
-					<%-- <form:option value="NONE" label="Select" /> --%>
+					<form:option value="NONE" label="Select" />
 				</form:select>
 			</fieldset>
 	</div>
@@ -112,8 +184,8 @@
 	</fieldset>
 	</div>
 	<div class="form-buttons">
-		<input type="submit" value="save" id="save_but" name="save"/>
-		<input type="submit"value="submit" name="submit"/>
+		<!-- <input type="submit" value="save" id="save_but" name="save"/> -->
+		<input type="submit" value="Submit" class="button" />
 	</div>
 	</form:form>
 </body>

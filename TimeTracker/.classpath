@@ -24,5 +24,9 @@
 			<attribute name="owner.project.facets" value="java"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="lib" path="C:/Users/kkousik/Downloads/jackson-core-2.2.3.jar"/>
+	<classpathentry kind="lib" path="C:/Users/kkousik/Downloads/jackson-annotations-2.9.10.jar"/>
+	<classpathentry kind="lib" path="C:/Users/kkousik/Downloads/jackson-jaxrs-json-provider-2.10.0.jar"/>
+	<classpathentry kind="lib" path="C:/Users/kkousik/Downloads/jackson-databind-2.8.1.jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>

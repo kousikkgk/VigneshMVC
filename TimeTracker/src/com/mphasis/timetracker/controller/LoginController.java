@@ -43,14 +43,15 @@ public class LoginController {
 			@ModelAttribute("loginBean") LoginBean loginBean,
 			@ModelAttribute("timeEntryBean") TimeEntryBean timeEntryBean) {
 		ModelAndView model = null;
+		HttpSession session = request.getSession();
 		try {
-			boolean isValidUser = loginDelegate.isValidUser(loginBean.getUsername(), loginBean.getPassword());
-			HttpSession session = request.getSession();
+			boolean isValidUser = loginDelegate.isValidUser(session,loginBean.getUsername(), loginBean.getPassword());
+			
 			session.setAttribute("id", loginBean.getUsername());
 			
 			if (isValidUser) {
 				System.out.println("User Login Successful");
-				request.setAttribute("loggedInUser", loginBean.getUsername());
+//				request.setAttribute("loggedInUser", session.getAttribute("empName")+" [ "+loginBean.getUsername()+" ]");
 				System.out.println(timeEntryBean.getProjectname());
 				model = new ModelAndView("welcome");
 				
@@ -65,16 +66,16 @@ public class LoginController {
 
 		return model;
 	}
-	@ModelAttribute("projName")
-	public List<String> projNameList(HttpSession session,@ModelAttribute("timeEntryBean") TimeEntryBean timeEntryBean)
-	{
-		List<String> projList=new ArrayList<String>();
-		try {
-			projList.add(timeEntryDelegate.projectname(session, "hi"));
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return projList;
-	}
+//	@ModelAttribute("projName")
+//	public List<String> projNameList(HttpSession session,@ModelAttribute("timeEntryBean") TimeEntryBean timeEntryBean)
+//	{
+//		List<String> projList=new ArrayList<String>();
+//		try {
+//			projList.add(timeEntryDelegate.projectname(session, "hi"));
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
+//		return projList;
+//	}
 
 }

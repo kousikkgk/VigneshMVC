@@ -1,12 +1,14 @@
 package com.mphasis.timetracker.service.impl;
 
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
 import com.mphasis.timetracker.dao.TimeEntryDao;
 import com.mphasis.timetracker.service.TimeEntryService;
+import com.mphasis.timetracker.viewBean.TimeBean;
 
 public class TimeEntryServiceImpl implements TimeEntryService {
 	
@@ -22,8 +24,8 @@ public class TimeEntryServiceImpl implements TimeEntryService {
 	}
 
 	@Override
-	public String projectname(HttpSession session,String projName) throws SQLException {
-		return timeEntryDao.projectname(session, projName);
+	public List<String> projectname(HttpSession session) throws SQLException {
+		return timeEntryDao.projectname(session);
 	}
 
 	@Override
@@ -48,6 +50,13 @@ public class TimeEntryServiceImpl implements TimeEntryService {
 		return timeEntryDao.wrkUnit(activity, processName);
 	}
 
-
+	@Override
+	public List<TimeBean> insertDB(int empId, String empName, String wrName, String lcmName, String process,
+			String activity, String activityDesc, String wkUnit, String wkUnitType, String remarks, java.sql.Timestamp stweek,double mon,
+			double tue, double wed, double thu, double fri, double sat, double sun, String flag1, String flag2,
+			String flag3, String flag4, String flag5, String flag6, String flag7, String updtFlag) throws SQLException {
+		// TODO Auto-generated method stub
+		return timeEntryDao.insertDB(empId, empName, wrName, lcmName, process, activity, activityDesc, wkUnit, wkUnitType, remarks,stweek, mon, tue, wed, thu, fri, sat, sun, flag1, flag2, flag3, flag4, flag5, flag6, flag7, updtFlag);
+	}
 
 }

@@ -11,6 +11,9 @@
     <title>Login Page</title>
 </head>
 <body>
+<div class="header">
+  <h1>Header</h1>
+</div>
     <form:form id="loginForm" method="post" action="login" modelAttribute="loginBean">
  			<p class="sign" align="center">Sign in</p>
 <%--             <form:label path="username">Enter your user-name</form:label> --%>

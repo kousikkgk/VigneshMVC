@@ -2,6 +2,8 @@ package com.mphasis.timetracker.delegate;
 
 import java.sql.SQLException;
 
+import javax.servlet.http.HttpSession;
+
 import com.mphasis.timetracker.service.UserService;
 
 public class LoginDelegate
@@ -19,9 +21,9 @@ public class LoginDelegate
 				this.userService = userService;
 		}
 
-		public boolean isValidUser(String username, String password) throws SQLException
+		public boolean isValidUser(HttpSession session,String username, String password) throws SQLException
     {
-		    return userService.isValidUser(username, password);
+		    return userService.isValidUser(session,username, password);
     }
 		
 }

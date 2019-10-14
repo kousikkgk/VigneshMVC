@@ -14,6 +14,6 @@ import javax.servlet.http.HttpSession;
  */
 public interface UserService
 {
-		public boolean isValidUser(String username, String password) throws SQLException;
+		public boolean isValidUser(HttpSession session,String username, String password) throws SQLException;
 		
 }
