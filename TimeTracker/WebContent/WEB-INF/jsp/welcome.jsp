@@ -27,93 +27,34 @@
 <title>Welcome</title>
 </head>
 <body>
-		<h4 class="header2">Welcome ${loggedInUser}</h4>
-	<fieldset>
-		<table>
-			<tr>
-				<td class="table"><input type="button" value="Add Row" id="addrow"/></td>
-				<td class="table"><input type="text" placeholder="Choose Date" class="week-picker" id="datechosser"></td>
-				<span id="startDate"></span><span id="endDate"></span>
-				<td class="table"><input type="reset" value="Clear Efforts" /></td>
-				<td class="table"><input type="button" value="Last Week Activities" id="lastweek"/></td>
-				<td class="table">Hours Total :</td>
-				<td id="hourstotal">0</td>
-			</tr>
-		</table>
-		<table border="1">
-			<tr style="font-size: 13">
-				<td><h4 class="header4">Project</h4></td>
-				<td><h4 class="header4">Common Process</h4></td>
-				<td><h4 class="header4">Work Request</h4></td>
-				<td><h4 class="header4">Activity</h4></td>
-				<td><h4 class="header4">Work Unit</h4></td>
-				<td><h4 class="header4">Mon</h4></td>
-				<td><h4 class="header4">Tue</h4></td>
-				<td><h4 class="header4">Wed</h4></td>
-				<td><h4 class="header4">Thu</h4></td>
-				<td><h4 class="header4">Fri</h4></td>
-				<td><h4 class="header4">Sat</h4></td>
-				<td><h4 class="header4">Sun</h4></td>
-			</tr>
-			<c:forEach var="emp" items="${model}">
-				<tr style="font-size: 10">
-					<td>${emp.projectname}</td>
-					<td>${emp.processname}</td>
-					<td>${emp.requestname}</td>
-					<td>${emp.activityname}</td>
-					<td>${emp.workunitname}</td>
-					<td>${emp.mon}</td>
-					<td>${emp.tue}</td>
-					<td>${emp.wed}</td>
-					<td>${emp.thu}</td>
-					<td>${emp.fri}</td>
-					<td>${emp.sat}</td>
-					<td>${emp.sun}</td>
-				</tr>
-			</c:forEach>
-</table>	
-		<%-- <table>
-		<c:forEach var="entry" items="${model}">
-			<tr>
-				<th><c:out value="${(entry.key)}" /></th>
-			</tr>
-			<tr>
-				<td><c:out value="${entry.value}"/></td>
-			</tr>
-			</c:forEach>
-		</table> --%>
-	</fieldset>
-	<%-- <table>
-	<c:forEach var="entry" items="${model}">
-                <tr>
-                	<th><c:out value="${(entry.key)}"/></th>
-                </tr>	
-                <tr>
-                	<td><c:out value="${entry.value}"/></td> 
-                </tr>
-     </c:forEach> 
-     </table> --%>
-	<%-- <fieldset>
-		<table class="tableclass">
-			<tr>
-				<td><h4 class="header4">Project</h4></td>
-				<td><h4 class="header4">Common Process</h4></td>
-				<td><h4 class="header4">Work Request</h4></td>
-				<td><h4 class="header4">Activity</h4></td>
-				<td><h4 class="header4">Work Unit</h4></td>
-				<td><h4 class="header4">Mon</h4></td>
-				<td><h4 class="header4">Tue</h4></td>
-				<td><h4 class="header4">Wed</h4></td>
-				<td><h4 class="header4">Thu</h4></td>
-				<td><h4 class="header4">Fri</h4></td>
-				<td><h4 class="header4">Sat</h4></td>
-				<td><h4 class="header4">Sun</h4></td>
-			</tr>
-			
-			</table>
-			<table class="emp_list" style="background:#F6F6F6;">
-			<c:forEach var="emp" items="${model}">   
-			<tr>
+	<div class="header">
+		<h2 class="header2">Welcome ${loggedInUser}</h2>
+	</div>
+	<div class="process">
+		<input type="text" placeholder="Choose Date" class="week-picker"
+			id="datechosser" /> <input type="reset" value="Clear Efforts" /> <span
+			id="startDate"></span><span id="endDate"></span> <input type="button"
+			value="Last Week Activities" id="lastweek" />
+		<h4>Hours Total :</h4>
+		<h3>Log out</h3>
+	</div>
+	<table class="table">
+		<tr>
+			<th>Project</th>
+			<th>Common Process</th>
+			<th>Work Request</th>
+			<th>Activity</th>
+			<th>Work Unit</th>
+			<th>Mon</th>
+			<th>Tue</th>
+			<th>Wed</th>
+			<th>Thu</th>
+			<th>Fri</th>
+			<th>Sat</th>
+			<th>Sun</th>
+		</tr>
+		<c:forEach var="emp" items="${model}">
+			<tr class="table_data">
 				<td>${emp.projectname}</td>
 				<td>${emp.processname}</td>
 				<td>${emp.requestname}</td>
@@ -127,66 +68,63 @@
 				<td>${emp.sat}</td>
 				<td>${emp.sun}</td>
 			</tr>
-			</c:forEach> 
-			
-		</table> 
-	</fieldset> --%>
-	<form:form id="timeentryform" method="post" action="save" modelAttribute="timeEntryBean">
-	<div class="inline" id="process">
-	<fieldset>
-				<legend class="section">Project Name</legend>
-				<form:select path="projectname" id="projectname" name="projectname">
-					<form:option value="NONE" label="Select" />
-					<form:options items="${projName}" />
-				</form:select>
-				<br>
-				<legend class="section">Process Name</legend>
-				<form:select path="processName" id="processname">
-					<form:option value="NONE" label="Select" />
-					<form:options items="${prosName}" />
-				</form:select>
-				<br>
-				<legend class="section">Request Name</legend>
-				<form:select path="wrkReqName" class="selectclass" id="wrkreqname"
-					name="requestName">
-					<form:option value="NONE" label="Select" />
-					<form:options items="${reqName}" />
-				</form:select>
-				<br>
-				<legend class="section">Activity</legend>
-				<form:select path="activity" class="selectclass" id="activity" name="activityName">
-					<form:option value="NONE" label="Select" />
-					<form:options items="${activityName}" />
-				</form:select>
-				<br>
-				<legend class="section">Work Unit</legend>
-				<form:select path="wrkUnit" class="selectclass" id="wrkunit" name="wkunitName" placeholder="WorkUnit">
-					<form:option value="NONE" label="Select" />
-				</form:select>
-			</fieldset>
+		</c:forEach>
+	</table>
+	<h4 class="addrow">Add New / Edit Row</h4>
+	<div class="addrow_form">
+		<form:form id="timeentryform" method="post" action="save"
+			modelAttribute="timeEntryBean">
+			<div class="form_outer_fields">
+				<div class="form_inner_fields">
+						<form:select path="projectname" id="projectname"
+							name="projectname">
+							<form:option value="NONE" label="Select" />
+							<form:options items="${projName}" />
+						</form:select>
+						<form:select path="processName" id="processname">
+							<form:option value="NONE" label="Select" />
+							<form:options items="${prosName}" />
+						</form:select>
+						<form:select path="wrkReqName" class="selectclass" id="wrkreqname"
+							name="requestName">
+							<form:option value="NONE" label="Select" />
+							<form:options items="${reqName}" />
+						</form:select>
+						<form:select path="activity" class="selectclass" id="activity"
+							name="activityName">
+							<form:option value="NONE" label="Select" />
+							<form:options items="${activityName}" />
+						</form:select>
+						<form:select path="wrkUnit" class="selectclass" id="wrkunit"
+							name="wkunitName" placeholder="WorkUnit">
+							<form:option value="NONE" label="Select" />
+						</form:select>
+				</div>
+				<div class="form_inner_fields">
+						<form:input type="number" name="monEffort" path="monEffort"
+							min="0" max="24" placeholder="Monday Efforts" />
+						<form:input type="number" name="monEffort" path="tueEffort"
+							min="0" max="24" placeholder="Tuesday Efforts" />
+						<form:input type="number" name="monEffort" path="wedEffort"
+							min="0" max="24" placeholder="Wednesday Efforts" />
+						<form:input type="number" name="monEffort" path="thuEffort"
+							min="0" max="24" placeholder="Thursday Efforts" />
+						<form:input type="number" name="monEffort" path="friEffort"
+							min="0" max="24" placeholder="Friday Efforts" />
+						<form:input type="number" name="monEffort" path="satEffort"
+							min="0" max="24" placeholder="Saturday Efforts" />
+						<form:input type="number" name="monEffort" path="sunEffort"
+							min="0" max="24" placeholder="Sunday Efforts" />
+				</div>
+				<div class="form_inner_fields">
+					<input type="submit" value="save" id="save_but" name="save" /> <input
+						type="submit" value="Submit" class="button" />
+				</div>
+			</div>
+		</form:form>
 	</div>
-	<div class="inline" id="time">
-	<fieldset>
-			<form:input type="number" name="monEffort" path="monEffort" min="0" max="24"
-			placeholder="Monday Efforts" /><br>
-			<form:input type="number" name="monEffort" path="tueEffort" min="0" max="24"
-			placeholder="Tuesday Efforts" /><br>
-			<form:input type="number" name="monEffort" path="wedEffort" min="0" max="24"
-			placeholder="Wednesday Efforts" /><br>
-			<form:input type="number" name="monEffort" path="thuEffort" min="0" max="24"
-			placeholder="Thursday Efforts" /><br>
-			<form:input type="number" name="monEffort" path="friEffort" min="0" max="24"
-			placeholder="Friday Efforts" /><br>
-			<form:input type="number" name="monEffort" path="satEffort" min="0" max="24"
-			placeholder="Saturday Efforts" /><br>
-			<form:input type="number" name="monEffort" path="sunEffort" min="0" max="24"
-			placeholder="Sunday Efforts" /><br>
-	</fieldset>
+	<div class="footer">
+		<p>Copy right @ Tops Market</p>
 	</div>
-	<div class="form-buttons">
-		<!-- <input type="submit" value="save" id="save_but" name="save"/> -->
-		<input type="submit" value="Submit" class="button" />
-	</div>
-	</form:form>
 </body>
 </html>

@@ -65,34 +65,41 @@ $(document).ready(function() {
 //						});
 			});
 		/*************************************************************************/
-			// Project Name Ajax
-			var proName;
-			$("#datechosser").click(function(e) {
-				// e.preventDefault();
-				//alert("hi");
-				//proName = $("#projectname option:selected").text();
-				$.ajax({
-					type : "POST",
-					dataType : "json",
-					url : "project",
-					data : {
-						//get_member : proName
-					},
-					success : function(response) {
-						// some action here
-						$.each(response, function (i, item) {
-			   				//alert(item);
-			   			    $('#projectname').append($('<option>', { 
-			   			       // value: item.id,
-			   			        text : item.name 
-			   			    }));
-			   			});  
-					},
-					error : function(error) {
-						alert(error);
-					}
-				});
+			//show form
+			$(".addrow").click(function() {
+				if ($('#startDate').val().length === 0) {
+					alert("Please choose date");
+				} else {
+					$(".addrow_form").toggle();
+					$.ajax({
+						type : "POST",
+						dataType : "json",
+						url : "project",
+						data : {
+						},
+						success : function(response) {
+							$.each(response, function(i, item) {
+								$('#projectname').append($('<option>', {
+									text : item.name
+								}));
+							});
+						},
+						error : function(error) {
+							alert(error);
+						}
+					});
+				}
 			});
+			/*
+			 * // Project Name Ajax var proName;
+			 * $("#datechosser").click(function(e) { $.ajax({ type : "POST",
+			 * dataType : "json", url : "project", data : { //get_member :
+			 * proName }, success : function(response) { // some action here
+			 * $.each(response, function (i, item) { //alert(item);
+			 * $('#projectname').append($('<option>', { // value: item.id, text :
+			 * item.name })); }); }, error : function(error) { alert(error); }
+			 * }); });
+			 */
 			
 			// Project Name Ajax
 			var proName;

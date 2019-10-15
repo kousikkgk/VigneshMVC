@@ -1,15 +1,22 @@
 body {
-	/*/* background-image: linear-gradient(to right top, #4b134f, #6f1855, #912355, #b03452, #c94b4b); */
-	/* background-image: linear-gradient(to right, #141e30, #243b55); */
-	background-image: linear-gradient(to right, #2c3e50, #4ca1af);
-	/* background-image: linear-gradient(to right, #4b134f, #6f1855, #912355, #b03452, #c94b4b); */
-	font-family: 'Ubuntu', sans-serif;
-	margin: 0;
+background: #02AAB0;  /* fallback for old browsers */
+background: -webkit-linear-gradient(to right, #00CDAC, #02AAB0);  /* Chrome 10-25, Safari 5.1-6 */
+background: linear-gradient(to right, #00CDAC, #02AAB0); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
 }
 .header {
-  background-color: #F7C331;
-  padding: 20px;
-  text-align: center;
+  width: 100%;
+    height: 60px;
+/*     background-color: #E6E6FA; */
+}
+.header h1
+{
+	text-align: center;
+	color:#FFFFFF;
+}
+.header img
+{
+	flaot:left;
 }
 #loginForm {
 	background-color: #FFFFFF;

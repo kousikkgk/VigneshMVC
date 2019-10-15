@@ -6,7 +6,6 @@ import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
@@ -128,7 +127,7 @@ public class TimeEntryDaoImpl implements TimeEntryDao
 		ResultSet resultSet = pstmt.executeQuery();
 		List<String> list=new ArrayList<String>();
 		while (resultSet.next()) {
-			System.out.println("Dao"+resultSet.getString(1));
+			//System.out.println("Dao"+resultSet.getString(1));
 			list.add( resultSet.getString(1));
 		}
 		return list;
@@ -218,11 +217,9 @@ public class TimeEntryDaoImpl implements TimeEntryDao
 		stmt.setTimestamp(2, stweek);
 		ResultSet resultSet = stmt.executeQuery();
 		//List<String> list=new ArrayList<String>();
-		HashMap<String,String> map=null;
 		List<TimeBean> bean1 = new ArrayList<TimeBean>();
 		TimeBeanImpl impl=new TimeBeanImpl();
 		while (resultSet.next()) {
-			map=new HashMap<String,String>();
 //			System.out.println("Dao"+resultSet.getString(1));
 			//list.add( resultSet.getString("wr_name"));
 			bean1.add(new TimeBean(projName, resultSet.getString("lcm_name"), resultSet.getString("wr_name"), activity, resultSet.getString("work_unit"), Double.parseDouble(resultSet.getString("mon")), Double.parseDouble(resultSet.getString("tue")), Double.parseDouble(resultSet.getString("wed")), Double.parseDouble(resultSet.getString("thu")), Double.parseDouble(resultSet.getString("fri")), Double.parseDouble(resultSet.getString("sat")), Double.parseDouble(resultSet.getString("sun"))));
