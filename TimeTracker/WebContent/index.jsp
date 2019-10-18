@@ -1,2 +1,2 @@
 
-<% response.sendRedirect("login");%>
+<% response.sendRedirect("index");%>

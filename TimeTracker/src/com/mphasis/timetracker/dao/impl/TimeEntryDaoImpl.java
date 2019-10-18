@@ -3,6 +3,7 @@ package com.mphasis.timetracker.dao.impl;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -134,31 +135,79 @@ public class TimeEntryDaoImpl implements TimeEntryDao
 	}
 
 	@Override
+	public List<TimeBean> viewDB(int empId, Timestamp stweek) {
+		String insQuery="select * from timeentries where emp_id = ? and start_week = ? order by time_id desc;";
+		String projName=getprojName(empId);
+		System.out.println("PROJ "+projName);
+		PreparedStatement stmt;
+		TimeBeanImpl impl=new TimeBeanImpl();
+		try {
+			stmt = dataSource.getConnection().prepareStatement(insQuery);
+			stmt.setInt(1, empId);
+			stmt.setTimestamp(2, stweek);
+			ResultSet resultSet = stmt.executeQuery();
+			List<TimeBean> bean1 = new ArrayList<TimeBean>();
+			while (resultSet.next()) {
+				bean1.add(new TimeBean(projName, resultSet.getString("lcm_name"), resultSet.getString("wr_name"),resultSet.getString("activity"), resultSet.getString("work_unit"), Double.parseDouble(resultSet.getString("mon")), Double.parseDouble(resultSet.getString("tue")), Double.parseDouble(resultSet.getString("wed")), Double.parseDouble(resultSet.getString("thu")), Double.parseDouble(resultSet.getString("fri")), Double.parseDouble(resultSet.getString("sat")), Double.parseDouble(resultSet.getString("sun"))));
+				impl.setTimebeanimpl(bean1);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		System.out.println("VIEWDB "+impl.getTimebeanimpl());
+		return impl.getTimebeanimpl();
+	}
+	@Override
+public String getprojName(int empId)
+{
+	String projName = null;
+		String projnamequery = "select distinct a.project_name from project a,emp_proj b,employee c where a.project_id = b.Project_id and b.emp_id = c.emp_id and c.emp_id = ? and c.emp_active = ? ";
+		
+		PreparedStatement prjnamest;
+		try {
+			prjnamest = dataSource.getConnection().prepareStatement(projnamequery);
+			prjnamest.setInt(1, empId);
+			prjnamest.setString(2, "Y");
+			ResultSet rs1=prjnamest.executeQuery();
+			while(rs1.next()) {
+				projName=rs1.getString(1);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	return projName;
+}
+@Override
+public int getprojectId(int empId)
+{
+	String projIdQuery="SELECT distinct project_id FROM emp_proj WHERE emp_id = ?";
+	PreparedStatement stst;
+	int projId=0;
+	try {
+		stst = dataSource.getConnection().prepareStatement(projIdQuery);
+		stst.setInt(1, empId);
+		ResultSet rs=stst.executeQuery();
+			while(rs.next()) {
+				projId=rs.getInt(1);
+			}
+	} catch (SQLException e) {
+		e.printStackTrace();
+	}
+	return projId;
+	
+}
+
+@Override
 	public List<TimeBean> insertDB(int empId, String empName, String wrName, String lcmName, String process,
 			String activity, String activityDesc, String wkUnit, String wkUnitType, String remarks,java.sql.Timestamp stweek,
 			double mon, double tue, double wed, double thu, double fri, double sat, double sun, String flag1,
 			String flag2, String flag3, String flag4, String flag5, String flag6, String flag7, String updtFlag)
 			throws SQLException {
-		//TimeBean bean=new TimeBean();
-		String projName = null;
-		String projnamequery = "select distinct a.project_name from project a,emp_proj b,employee c where a.project_id = b.Project_id and b.emp_id = c.emp_id and c.emp_id = ? and c.emp_active = ? ";
 		
-		PreparedStatement prjnamest = dataSource.getConnection().prepareStatement(projnamequery);
-		prjnamest.setInt(1, empId);
-		prjnamest.setString(2, "Y");
-		ResultSet rs1=prjnamest.executeQuery();
-		while(rs1.next()) {
-			projName=rs1.getString(1);
-		}
-		
-		String projIdQuery="SELECT distinct project_id FROM emp_proj WHERE emp_id = ?";
-		PreparedStatement stst = dataSource.getConnection().prepareStatement(projIdQuery);
-		stst.setInt(1, empId);
-		ResultSet rs=stst.executeQuery();
-		int projId=0;
-		while(rs.next()) {
-			projId=rs.getInt(1);
-		}
+		int projId=getprojectId(empId);
+		String projName=getprojName(empId);
 		String query="insert into timeentries (project_id, emp_id,emp_name, wr_name, lcm_name, process, activity, activity_desc, work_unit, work_unit_type, remarks, start_week, mon, tue, wed, thu, fri, sat, sun, flag1, flag2, flag3, flag4, flag5, flag6, flag7, update_flag) values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 		PreparedStatement st = dataSource.getConnection().prepareStatement(query);
 		st.setInt(1, projId);
@@ -211,36 +260,12 @@ public class TimeEntryDaoImpl implements TimeEntryDao
 			st.setString(26, "Y");
     	st.setString(27, "Y");
     	st.executeUpdate();
-    	String insQuery="select * from timeentries where emp_id = ? and start_week = ? order by time_id desc;";
-		PreparedStatement stmt = dataSource.getConnection().prepareStatement(insQuery);
-		stmt.setInt(1, empId);
-		stmt.setTimestamp(2, stweek);
-		ResultSet resultSet = stmt.executeQuery();
-		//List<String> list=new ArrayList<String>();
-		List<TimeBean> bean1 = new ArrayList<TimeBean>();
+    	List<TimeBean> bean1 = new ArrayList<TimeBean>();
 		TimeBeanImpl impl=new TimeBeanImpl();
-		while (resultSet.next()) {
-//			System.out.println("Dao"+resultSet.getString(1));
-			//list.add( resultSet.getString("wr_name"));
-			bean1.add(new TimeBean(projName, resultSet.getString("lcm_name"), resultSet.getString("wr_name"), activity, resultSet.getString("work_unit"), Double.parseDouble(resultSet.getString("mon")), Double.parseDouble(resultSet.getString("tue")), Double.parseDouble(resultSet.getString("wed")), Double.parseDouble(resultSet.getString("thu")), Double.parseDouble(resultSet.getString("fri")), Double.parseDouble(resultSet.getString("sat")), Double.parseDouble(resultSet.getString("sun"))));
-//			bean.setProjectname(projName);
-//			bean.setProcessname(resultSet.getString("lcm_name"));
-//			bean.setRequestname(resultSet.getString("wr_name"));
-//			bean.setActivityname(activity);
-//			bean.setWorkunitname(resultSet.getString("work_unit"));
-//			bean.setMon(Double.parseDouble(resultSet.getString("mon")));
-//			bean.setTue(Double.parseDouble(resultSet.getString("tue")));
-//			bean.setWed(Double.parseDouble(resultSet.getString("wed")));
-//			bean.setThu(Double.parseDouble(resultSet.getString("thu")));
-//			bean.setFri(Double.parseDouble(resultSet.getString("fri")));
-//			bean.setSat(Double.parseDouble(resultSet.getString("sat")));
-//			bean.setSun(Double.parseDouble(resultSet.getString("sun")));
-			impl.setTimebeanimpl(bean1);
-		}
-//		for(TimeBean str:impl.getTimebeanimpl()) {
-//		System.out.println(str.getActivityname());
-//		}
+		bean1=viewDB(empId, stweek);
+		impl.setTimebeanimpl(bean1);
 		return impl.getTimebeanimpl();
 	}
+
 	
 }

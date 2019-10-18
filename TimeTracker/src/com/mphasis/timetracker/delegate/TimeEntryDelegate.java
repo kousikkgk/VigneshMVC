@@ -6,6 +6,8 @@ import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
+import org.apache.naming.java.javaURLContextFactory;
+
 import com.mphasis.timetracker.service.TimeEntryService;
 import com.mphasis.timetracker.viewBean.TimeBean;
 
@@ -46,5 +48,10 @@ public class TimeEntryDelegate {
 	public List<TimeBean> insertDB(int empId,String empName,String wrName,String lcmName,String process,String activity,String activityDesc,String wkUnit,String wkUnitType,String remarks,java.sql.Timestamp stweek,double mon,double tue,double wed,double thu,double fri,double sat,double sun,String flag1,String flag2,String flag3,String flag4,String flag5,String flag6,String flag7,String updtFlag) throws SQLException 
 	{
 		return timeEntryService.insertDB(empId, empName, wrName, lcmName, process, activity, activityDesc, wkUnit, wkUnitType, remarks, stweek,mon, tue, wed, thu, fri, sat, sun, flag1, flag2, flag3, flag4, flag5, flag6, flag7, updtFlag);
+	}
+	public List<TimeBean> viewDB(int empId,java.sql.Timestamp stweek) throws SQLException
+	{
+		return timeEntryService.viewDB(empId, stweek);
+		
 	}
 }

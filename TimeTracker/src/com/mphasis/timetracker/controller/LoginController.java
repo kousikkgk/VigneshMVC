@@ -9,6 +9,7 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -27,55 +28,61 @@ public class LoginController {
 	@Autowired
 	private TimeEntryDelegate timeEntryDelegate;
 
-	@RequestMapping(value = "/login", method = RequestMethod.GET)
-	public ModelAndView displayLogin(HttpServletRequest request, HttpServletResponse response, LoginBean loginBean,
-			TimeEntryBean timeEntryBean) {
-		System.out.println("view1");
-		ModelAndView model = new ModelAndView("login");
-		// LoginBean loginBean = new LoginBean();
-		model.addObject("loginBean", loginBean);
-		model.addObject("timeEntryBean", timeEntryBean);
-		return model;
+//	@RequestMapping(value = "/", method = RequestMethod.GET)
+//	public ModelAndView displayLogin(HttpServletRequest request, HttpServletResponse response, LoginBean loginBean,
+//			TimeEntryBean timeEntryBean) {
+//		System.out.println("view1");
+//		ModelAndView model = new ModelAndView("login");
+//		// LoginBean loginBean = new LoginBean();
+//		model.addObject("loginBean", loginBean);
+//		model.addObject("timeEntryBean", timeEntryBean);
+//		return model;
+//	}
+
+	@RequestMapping(value = "/index", method = RequestMethod.GET)
+	public String displayLogin(HttpServletRequest request, HttpServletResponse response) {
+		return "login";
 	}
 
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
-	public ModelAndView executeLogin(HttpServletRequest request, HttpServletResponse response,
-			@ModelAttribute("loginBean") LoginBean loginBean,
+	public String executeLogin(HttpServletRequest request, HttpServletResponse response, HttpSession session, Model model,
+			LoginBean loginBean,
+			// @ModelAttribute("loginBean") LoginBean loginBean,
 			@ModelAttribute("timeEntryBean") TimeEntryBean timeEntryBean) {
-		ModelAndView model = null;
-		HttpSession session = request.getSession();
+		System.out.println("Login controller...");
+		// ModelAndView model = null;
+		//HttpSession session = request.getSession();
 		try {
-			boolean isValidUser = loginDelegate.isValidUser(session,loginBean.getUsername(), loginBean.getPassword());
-			
+
+			model.addAttribute("userName", loginBean.getUsername());
+			model.addAttribute("passWord", loginBean.getPassword());
+			System.out.println(model);
 			session.setAttribute("id", loginBean.getUsername());
-			
+
+			boolean isValidUser = loginDelegate.isValidUser(session, loginBean.getUsername(), loginBean.getPassword());
+
+			session.setAttribute("id", loginBean.getUsername());
+
 			if (isValidUser) {
-				System.out.println("User Login Successful");
-//				request.setAttribute("loggedInUser", session.getAttribute("empName")+" [ "+loginBean.getUsername()+" ]");
+				System.out.println("User Login Successful"); 
+				model.addAttribute("loggedInUser",session.getAttribute("empName") + " [ " + loginBean.getUsername() + " ]");
+//				request.setAttribute("loggedInUser",
+//						session.getAttribute("empName") + " [ " + loginBean.getUsername() + " ]");
 				System.out.println(timeEntryBean.getProjectname());
-				model = new ModelAndView("welcome");
-				
+				// model = new ModelAndView("welcome");
+				return "welcome";
+
 			} else {
-				model = new ModelAndView("login");
-				request.setAttribute("message", "Invalid credentials!!");
+				return "login";
 			}
+			// model = new ModelAndView("login"); request.setAttribute("message", "Invalid
+			// credentials!!"); }
 
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
-		return model;
+		return "welcome";
 	}
-//	@ModelAttribute("projName")
-//	public List<String> projNameList(HttpSession session,@ModelAttribute("timeEntryBean") TimeEntryBean timeEntryBean)
-//	{
-//		List<String> projList=new ArrayList<String>();
-//		try {
-//			projList.add(timeEntryDelegate.projectname(session, "hi"));
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
-//		return projList;
-//	}
 
 }

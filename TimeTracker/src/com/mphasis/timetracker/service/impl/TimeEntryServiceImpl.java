@@ -1,6 +1,7 @@
 package com.mphasis.timetracker.service.impl;
 
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.List;
 
@@ -57,6 +58,11 @@ public class TimeEntryServiceImpl implements TimeEntryService {
 			String flag3, String flag4, String flag5, String flag6, String flag7, String updtFlag) throws SQLException {
 		// TODO Auto-generated method stub
 		return timeEntryDao.insertDB(empId, empName, wrName, lcmName, process, activity, activityDesc, wkUnit, wkUnitType, remarks,stweek, mon, tue, wed, thu, fri, sat, sun, flag1, flag2, flag3, flag4, flag5, flag6, flag7, updtFlag);
+	}
+
+	@Override
+	public List<TimeBean> viewDB(int empId, Timestamp stweek) {
+		return timeEntryDao.viewDB(empId, stweek);
 	}
 
 }

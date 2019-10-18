@@ -39,7 +39,21 @@ $(document).ready(function() {
 								$('#endDate').val(
 										$.datepicker.formatDate(dateFormat,
 												endDate, inst.settings));
-								
+								$.ajax({
+									type : "POST",
+									dataType : "json",
+									url : "view",
+									data : {
+										stweek : $('#startDate').val()
+									},
+									success : function(response) {
+										alert("SUCCESS: "+response);
+										//console.log(response);
+									},
+									error : function(error) {
+										alert("ERROR: "+error);
+									}
+								});
 								
 								
 								selectCurrentWeek();
@@ -70,6 +84,8 @@ $(document).ready(function() {
 				if ($('#startDate').val().length === 0) {
 					alert("Please choose date");
 				} else {
+//					$('#timeentryform').reset();
+					$('#timeentryform').trigger("reset"); 
 					$(".addrow_form").toggle();
 					$.ajax({
 						type : "POST",
@@ -78,6 +94,7 @@ $(document).ready(function() {
 						data : {
 						},
 						success : function(response) {
+							alert("Success: "+response);
 							$.each(response, function(i, item) {
 								$('#projectname').append($('<option>', {
 									text : item.name
@@ -85,10 +102,11 @@ $(document).ready(function() {
 							});
 						},
 						error : function(error) {
-							alert(error);
+							alert("ERROR="+error);
 						}
 					});
 				}
+				//$('#timeentryform').reset();
 			});
 			/*
 			 * // Project Name Ajax var proName;

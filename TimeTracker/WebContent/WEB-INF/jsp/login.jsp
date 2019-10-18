@@ -14,14 +14,20 @@
   <img alt="logo" src="/resources/img/logo.png" />
   <h1>Tops Time Tracking System</h1>
 </div>
-    <form:form id="loginForm" method="post" action="login" modelAttribute="loginBean">
+    <%-- <form:form id="loginForm" method="get" action="login" modelAttribute="loginBean">
  			<p class="sign" align="center">Sign in</p>
-<%--             <form:label path="username">Enter your user-name</form:label> --%>
+            <form:label path="username">Enter your user-name</form:label>
             <form:input id="username" name="username" path="username" class="un" placeholder="Employee Id"/><br>
-            <%-- <form:label path="username">Please enter your password</form:label> --%>
+            <form:label path="username">Please enter your password</form:label>
             <form:password id="password" name="password" path="password" class="pass" placeholder="Password"/><br>
             <input type="submit" value="Submit" class="button" />
-        </form:form>
+        </form:form> --%>
+        <form id="loginForm" method="post" action="login">
+        	<p class="sign" align="center">Sign in</p>
+        	<input type="text" id="username" name="username" class="un" placeholder="Employee Id"/><br>
+        	<input type="password" id="password" name="password" class="pass" placeholder="Password"/><br>
+        	<input type="submit" value="Submit" class="button" />
+        </form>
 </body>
 </html>
 
