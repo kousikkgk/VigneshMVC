@@ -157,10 +157,11 @@ public class TimeEntryDaoImpl implements TimeEntryDao
 		System.out.println("VIEWDB "+impl.getTimebeanimpl());
 		return impl.getTimebeanimpl();
 	}
+	
 	@Override
-public String getprojName(int empId)
-{
-	String projName = null;
+	public String getprojName(int empId)
+	{
+		String projName = null;
 		String projnamequery = "select distinct a.project_name from project a,emp_proj b,employee c where a.project_id = b.Project_id and b.emp_id = c.emp_id and c.emp_id = ? and c.emp_active = ? ";
 		
 		PreparedStatement prjnamest;
@@ -179,26 +180,54 @@ public String getprojName(int empId)
 		
 	return projName;
 }
-@Override
-public int getprojectId(int empId)
-{
-	String projIdQuery="SELECT distinct project_id FROM emp_proj WHERE emp_id = ?";
-	PreparedStatement stst;
-	int projId=0;
-	try {
-		stst = dataSource.getConnection().prepareStatement(projIdQuery);
-		stst.setInt(1, empId);
-		ResultSet rs=stst.executeQuery();
-			while(rs.next()) {
-				projId=rs.getInt(1);
-			}
-	} catch (SQLException e) {
-		e.printStackTrace();
+	@Override
+	public int getprojectId(int empId)
+	{
+		String projIdQuery="SELECT distinct project_id FROM emp_proj WHERE emp_id = ?";
+		PreparedStatement stst;
+		int projId=0;
+		try {
+			stst = dataSource.getConnection().prepareStatement(projIdQuery);
+			stst.setInt(1, empId);
+			ResultSet rs=stst.executeQuery();
+				while(rs.next()) {
+					projId=rs.getInt(1);
+				}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return projId;
+		
 	}
-	return projId;
+	public String getWunitType(String actvityName) {
+		
+		String query=("select distinct(WU_TYPE) from tops.work_unit_details where ACTIVITY_NAME = ?; ");
+		String rtnVal = null;
+		try {
+		PreparedStatement pstmt = dataSource.getConnection().prepareStatement(query);
+		pstmt.setString(1, actvityName);
+		ResultSet resultSet = pstmt.executeQuery();
+		while (resultSet.next()) {
+			rtnVal=resultSet.getString(1);
+		}
+		}catch(SQLException e) {e.printStackTrace();}
+		return rtnVal;
+	}
 	
-}
-
+public String getProcess(String actvityName) {
+		
+		String query=("select distinct(PROCESS_NAME) from tops.work_unit_details where ACTIVITY_NAME = ?");
+		String rtnVal = null;
+		try {
+		PreparedStatement pstmt = dataSource.getConnection().prepareStatement(query);
+		pstmt.setString(1, actvityName);
+		ResultSet resultSet = pstmt.executeQuery();
+		while (resultSet.next()) {
+			rtnVal=resultSet.getString(1);
+		}
+		}catch(SQLException e) {e.printStackTrace();}
+		return rtnVal;
+	}
 @Override
 public List<TimeBean> insertDB(int empId, String empName, String wrName, String lcmName, String process,
 			String activity, String activityDesc, String wkUnit, String wkUnitType, String remarks,java.sql.Timestamp stweek,
@@ -208,6 +237,8 @@ public List<TimeBean> insertDB(int empId, String empName, String wrName, String 
 		
 		int projId=getprojectId(empId);
 		String projName=getprojName(empId);
+		String wuType=getWunitType(activity);
+		String processName=getProcess(activity);
 		String query="insert into timeentries (project_id, emp_id,emp_name, wr_name, lcm_name, process, activity, activity_desc, work_unit, work_unit_type, remarks, start_week, mon, tue, wed, thu, fri, sat, sun, flag1, flag2, flag3, flag4, flag5, flag6, flag7, update_flag) values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 		PreparedStatement st = dataSource.getConnection().prepareStatement(query);
 		st.setInt(1, projId);
@@ -215,11 +246,11 @@ public List<TimeBean> insertDB(int empId, String empName, String wrName, String 
         st.setString(3, empName);
         st.setString(4, wrName);
         st.setString(5, lcmName);
-        st.setString(6, process);
+        st.setString(6, processName);
         st.setString(7, activity);
-        st.setString(8, activityDesc);
+        st.setString(8, processName+" - "+wuType);
         st.setString(9, wkUnit);
-        st.setString(10, wkUnitType);
+        st.setString(10,wuType);
         st.setString(11, remarks);
         st.setTimestamp(12, stweek);
         //st.setDate(12, (java.sql.Date)session.getAttribute("stDate"));
@@ -276,6 +307,8 @@ public List<TimeBean> updateDB(int timeid,int empId, String empName, String wrNa
 		
 		int projId=getprojectId(empId);
 		String projName=getprojName(empId);
+		String wuType=getWunitType(activity);
+		String processName=getProcess(activity);
 		
 		String query="update timeentries set project_id=?, emp_id=?,emp_name=?, wr_name=?, lcm_name=?, process=?, activity=?, activity_desc=?, work_unit=?, work_unit_type=?, remarks=?, start_week=?, mon=?, tue=?, wed=?, thu=?, fri=?, sat=?, sun=?, flag1=?, flag2=?, flag3=?, flag4=?, flag5=?, flag6=?, flag7=?, update_flag=? where time_id=?";
 		PreparedStatement st = dataSource.getConnection().prepareStatement(query);
@@ -284,11 +317,11 @@ public List<TimeBean> updateDB(int timeid,int empId, String empName, String wrNa
         st.setString(3, empName);
         st.setString(4, wrName);
         st.setString(5, lcmName);
-        st.setString(6, process);
+        st.setString(6, processName);
         st.setString(7, activity);
-        st.setString(8, activityDesc);
+        st.setString(8, processName+" - "+wuType);
         st.setString(9, wkUnit);
-        st.setString(10, wkUnitType);
+        st.setString(10, wuType);
         st.setString(11, remarks);
         st.setTimestamp(12, stweek);
         //st.setDate(12, (java.sql.Date)session.getAttribute("stDate"));

@@ -98,11 +98,11 @@ $(document).ready(function() {
 				
 				//unbind()-->trigger events ontime
 				$('#deleterow').unbind().click(function(){
-						if(selWeek.getTime()<today.getTime() || lastMon.getTime()<today.getTime())
-					{
-						alert("true");
-					}
-					else{
+//						if(selWeek.getTime()<today.getTime() || lastMon.getTime()<today.getTime())
+//					{
+//						alert("true");
+//					}
+//					else{
 						if ($("tr").hasClass("selected")){	
 							var timeid=$('.selected').attr('id');
 							var r = confirm("Are you want to Delete the record!");
@@ -110,7 +110,7 @@ $(document).ready(function() {
 								actionAjaxCall("deleterow",timeid);
 							} 
 						}else{alert("Select atleast one row in the table.");}
-					}
+//					}
 				});
 			    
 			},

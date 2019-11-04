@@ -205,13 +205,16 @@ input[type="reset"]:hover{
 /*-----------------------------------------------------------------*/
 /*Container Part*/
 .addrow{
-	border: 2px solid #5AB5A2;
-  	border-radius:30px;
-	margin: 30px;
+	border: 1px solid #5AB5A2;
+  	border-radius:10px;
+	margin: auto;
 	background:#fff;
-	width: 30vh;
+	width: 90%;
+	margin:10px auto;
 	padding: 3px;
-	text-align: center;
+}
+.addrow h4{
+	margin-left:20px;
 }
 
 .addrow:hover{

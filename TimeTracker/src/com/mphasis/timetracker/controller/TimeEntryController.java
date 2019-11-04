@@ -170,7 +170,7 @@ public class TimeEntryController
 		process = "Monitor System Operations";
 		activity = timeEntryBean.getActivityName();
 		activityDesc = "Monitor System Operations - Monitor Application";
-		wrkUnit = timeEntryBean.getActivityName();
+		wrkUnit = timeEntryBean.getWrkunitName();
 		wrkUntType = "Usecase";
 		remarks = "remarks";
 		

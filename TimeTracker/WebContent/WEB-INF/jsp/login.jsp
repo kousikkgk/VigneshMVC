@@ -8,8 +8,11 @@
 
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <link href="<c:url value="/resources/css/login.css" />" rel="stylesheet">
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+  <link href="https://fonts.googleapis.com/css?family=Nunito+Sans:400,600|Poppins:400,500&display=swap" rel="stylesheet">
 <title>Login Page</title>
 </head>
 <body>
@@ -21,44 +24,69 @@
 			<h1>Tops Time Tracking System</h1>
 		</div>
 	</div>
-	<div class="container">
-		<div class="form-container">
-			<form id="loginForm" method="post" action="login">
+	<form id="loginForm" method="post" action="login">
+		<div class="outer-container">
+			<div class="inner-container1">
+				<img src="/TimeTracker/resources/img/timebg03.png" alt="timetracker">
+			</div>
+			<div class="inner-container2">
+				<h2>Employee Login</h2>
 
-				<div class="logo">
-					<p>member login</p>
-				</div>
-
-				<div class="input-group">
+				<div class="floating-label">
 					<input type="text" id="username" name="username"
-						class="form-control" /> <label for="name">Employee ID</label>
+						class="floating-input" placeholder=" " /> <span class="highlight"></span>
+					<label>Employee ID</label>
 				</div>
 
-				<div class="input-group">
+				<div class="floating-label">
 					<input type="password" id="password" name="password"
-						class="form-control" /><br> <label for="password">Password</label>
+						class="floating-input" placeholder=" " /> <span class="highlight"></span>
+					<label>Password</label>
 				</div>
 
-				<button type="submit">login</button>
-				<!-- <a href="#">Change Password</a> -->
+				<input type="submit" name="submit" value="Login"> 
+				<a href="#" data-toggle="modal" data-target="#myModal">Change Password</a>
+  <!--button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Open Modal</button-->
 
-			</form>
+  <!-- Modal -->
+  <div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Change Password</h4>
+        </div>
+        <div class="modal-body">
+          <div class="floating-label">
+			<input type="password" id="oldpassword" name="oldpassword" class="floating-input" placeholder=" " /> 
+            <span class="highlight"></span>
+			<label>Old Password</label>
+		  </div>
+          <div class="floating-label">
+			<input type="password" id="newpassword" name="newpassword" class="floating-input" placeholder=" " /> 
+            <span class="highlight"></span>
+			<label>New Password</label>
+		  </div>
+          <div class="floating-label">
+			<input type="password" id="confpassword" name="confpassword" class="floating-input" placeholder=" " /> 
+            <span class="highlight"></span>
+			<label>Confirm New Password</label>
+		  </div>
+		  <input type="submit" name="submit" value="Change Password"> 
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+  
+			</div>
 		</div>
-	</div>
-	<script type="text/javascript">
-		function stateCheck($formControl) {
-			if ($formControl.val().length > 0) {
-				$formControl.addClass('valid');
-			} else {
-				$formControl.removeClass('valid');
-			}
-		}
-		$(function() {
-			$('.form-control').on('focusout', function() {
-				stateCheck($(this));
-			});
-		});
-	</script>
+	</form>
 </body>
 <%-- <body>
 <div class="header">
