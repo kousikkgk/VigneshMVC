@@ -1,4 +1,4 @@
-package com.mphasis.timetracker.controller;
+	package com.mphasis.timetracker.controller;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -68,15 +68,16 @@ public class LoginController {
 				model.addAttribute("loggedInUser",session.getAttribute("empName") + " [ " + loginBean.getUsername() + " ]");
 //				request.setAttribute("loggedInUser",
 //						session.getAttribute("empName") + " [ " + loginBean.getUsername() + " ]");
-				System.out.println(timeEntryBean.getProjectname());
+				//System.out.println(timeEntryBean.getProjectname());
 				// model = new ModelAndView("welcome");
 				return "welcome";
 
 			} else {
+				
+				model.addAttribute("msg", "Invalid credentials!!"); 
 				return "login";
 			}
-			// model = new ModelAndView("login"); request.setAttribute("message", "Invalid
-			// credentials!!"); }
+			 
 
 		} catch (Exception e) {
 			e.printStackTrace();

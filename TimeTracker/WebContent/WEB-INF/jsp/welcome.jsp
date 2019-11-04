@@ -3,6 +3,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
+	
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -45,17 +46,21 @@
 		<div class="header-logo">
 			<h2 class="header2">${loggedInUser}</h2>
 		</div>
+
 		<div class="header-title">
 			<h1>Tops Time Tracking System</h1>
 		</div>
+
 		<div class="header-logout">
-			<a href="#" style="font-size: 24px" class="fa">&#xf044;</a>
-			<!-- <a href="#">Log Out</a> -->
+			<a href="logout"><img src="/TimeTracker/resources/img/logout1.png" alt="logout" /></a>
 		</div>
+
 	</div>
+
 	<div class="table-container">
-		<table class="table">
-			<tr>
+  		<%-- <table class="entry-table">
+    		<thead>
+      			<tr>
 				<th>Project</th>
 				<th>Common Process</th>
 				<th>Work Request</th>
@@ -69,99 +74,160 @@
 				<th>Sat</th>
 				<th>Sun</th>
 			</tr>
-			<c:forEach var="emp" items="${model}">
+    		</thead>
+			<c:forEach var="entries" items="${tabledisplay}">
 				<tr class="table_data">
-					<td>${emp.projectname}</td>
-					<td>${emp.processname}</td>
-					<td>${emp.requestname}</td>
-					<td>${emp.activityname}</td>
-					<td>${emp.workunitname}</td>
-					<td>${emp.mon}</td>
-					<td>${emp.tue}</td>
-					<td>${emp.wed}</td>
-					<td>${emp.thu}</td>
-					<td>${emp.fri}</td>
-					<td>${emp.sat}</td>
-					<td>${emp.sun}</td>
-					<td><a href="#">edit</a></td>
-					<td><a href="#">delete</a></td>
+					<td width="50">${entries.projectname}</td>
+					<td width="50">${entries.processname}</td>
+					<td width="50">${entries.requestname}</td>
+					<td width="50">${entries.activityname}</td>
+					<td width="50">${entries.workunitname}</td>
+					<td width="20">${entries.mon}</td>
+					<td width="20">${entries.tue}</td>
+					<td width="20">${entries.wed}</td>
+					<td width="20">${entries.thu}</td>
+					<td width="20">${entries.fri}</td>
+					<td width="20">${entries.sat}</td>
+					<td width="20">${entries.sun}</td>
 				</tr>
 			</c:forEach>
-		</table>
-	</div>
-	<form:form id="timeentryform" method="post" action="save"
-			modelAttribute="timeEntryBean">
-	<div class="action-container">
-		<div class="action-container-cte">
-		<!-- <label for="datechooser">Choose Date</label> -->
-			<input type="text" placeholder="Choose Date" class="week-picker"
-				id="datechosser" />
+			</tbody>
+  		</table> --%>
+  	</div>
+	<form id="timeentryform" method="post" action="save">	
+
+		<div class="action-container">
+
+			<div class="action-container-cte">
+					Date : <input type="hidden" id="datechooser">
+					<p id="disp-date"></p>
+			</div>
+			
+			
+			<div class="action-container-reset">
+				<input type="reset" value="Clear Efforts" class="btn save" /> <span
+					id="startDate"></span><span id="endDate"></span>
+			</div>
+			
+			<div class="action-container-lastweek">
+				<input type="button" value="Last Week Activities" id="lastweek"
+					class="btn save" />
+			</div>
+			
+			<div class="action-container-total">
+				<h4>Hours Total :</h4>
+			</div>
+
+			<div class="action-container-edit">
+				<span id="editrow"> <img src="/TimeTracker/resources/img/edit1.png" style="width:20px;"/></span>
+			</div>
+			
+			<div class="action-container-delete">
+				<span id="deleterow"> <img src="/TimeTracker/resources/img/delete1.png" style="width:20px;"/></span>	
+			</div>
 		</div>
-		<div class="action-container-reset">
-			<input type="reset" value="Clear Efforts" class="btn save"/> <span id="startDate"></span><span
-				id="endDate"></span>
+
+		<div class="addrow">
+			<h4>Add New / Edit Row</h4>
 		</div>
-		<div class="action-container-lastweek">
-			<input type="button" value="Last Week Activities" id="lastweek" class="btn save"/>
-		</div>
-		<div class="action-container-total">
-			<h4>Hours Total :</h4>
-		</div>
-	</div>
-	<div class="addrow">
-		<h4>Add New / Edit Row</h4>
-	</div>
-	 	
-	<div class="form_outer_container">
-        <div class="form_inner_container1">
-					<form:select path="projectname" id="projectname" name="projectname">
-						<form:option value="NONE" label="Select" />
-						<form:options items="${projName}" />
-					</form:select>
-					<form:select path="processName" id="processname">
-						<form:option value="NONE" label="Select" />
-						<form:options items="${prosName}" />
-					</form:select>
-					<form:select path="wrkReqName" class="selectclass" id="wrkreqname"
-						name="requestName">
-						<form:option value="NONE" label="Select" />
-						<form:options items="${reqName}" />
-					</form:select>
-					<form:select path="activity" class="selectclass" id="activity"
-						name="activityName">
-						<form:option value="NONE" label="Select" />
-						<form:options items="${activityName}" />
-					</form:select>
-					<form:select path="wrkUnit" class="selectclass" id="wrkunit"
-						name="wkunitName" placeholder="WorkUnit">
-						<form:option value="NONE" label="Select" />
-					</form:select>
+		<div id="toggle-container">
+		<div class="form_outer_container">
+			<div class="form_inner_container1">
+				<input type="hidden" id="timeidtext" name="timeidtext" disabled="disabled" /> 
+				<input type="hidden" name="timeidhidden" id="timeidhide" value="0"/>
+				
+				<div class="floating-label">			
+					<select id="projectname" name="projectName" class="floating-select" onclick="this.setAttribute('value', this.value);" value="">
+						<option value=""></option>
+					</select>
+					<span class="highlight"></span>
+					<label>Project</label> 
 				</div>
-				<div class="form_inner_container2">	
-					<form:input type="number" name="monEffort" path="monEffort" min="0"
-						max="24" placeholder="Monday Efforts" />
-					<form:input type="number" name="monEffort" path="tueEffort" min="0"
-						max="24" placeholder="Tuesday Efforts" />
-					<form:input type="number" name="monEffort" path="wedEffort" min="0"
-						max="24" placeholder="Wednesday Efforts" />
-					<form:input type="number" name="monEffort" path="thuEffort" min="0"
-						max="24" placeholder="Thursday Efforts" />
-					<form:input type="number" name="monEffort" path="friEffort" min="0"
-						max="24" placeholder="Friday Efforts" />
-					<form:input type="number" name="monEffort" path="satEffort" min="0"
-						max="24" placeholder="Saturday Efforts" />
-					<form:input type="number" name="monEffort" path="sunEffort" min="0"
-						max="24" placeholder="Sunday Efforts" />
+				
+				<div class="floating-label">
+					<select id="processname" name="processName" class="floating-select" class="floating-select" onclick="this.setAttribute('value', this.value);" value="">
+						<option value=""></option>
+					</select>
+					<span class="highlight"></span>
+					<label>Process</label> 
 				</div>
-				<div class="form_inner_container3">
-					<input type="submit" value="Save" id="save_but" name="save" class="btn save" /> 
-					<input type="submit" value="Submit" class="btn save" />
+
+				<div class="floating-label">
+					<select id="wrkreqname" name="requestName" class="floating-select" class="floating-select" onclick="this.setAttribute('value', this.value);" value="">
+						<option value=""></option>
+					</select>
+					<span class="highlight"></span>
+					<label>Workrequest</label> 
+				</div>
+
+				<div class="floating-label">
+					 
+					<select id="activity" name="activityName" class="floating-select" class="floating-select" onclick="this.setAttribute('value', this.value);" value="">
+						<option value=""></option>
+					</select>
+					<span class="highlight"></span>
+					<label>Activity</label>
+				</div>
+
+				<div class="floating-label">
+					<select id="wrkunit" name="wrkunitName" class="floating-select" class="floating-select" onclick="this.setAttribute('value', this.value);" value="">
+					</select>
+					<span class="highlight"></span>
+					<label>Work Unit</label>
+				</div>
+						
+			</div>
+
+					<div class="form_inner_container2">
+						<div class="floating-label"> 
+							<input type="number" id="mon" class="floating-input" name="monEffort" step="any" min="0" max="24" placeholder=" " value="0.0"/>
+							<span class="highlight"></span>
+							<label>Mon Efforts</label>
+						</div>
+
+						<div class="floating-label"> 
+							<input type="number" id="tue" class="floating-input" name="tueEffort" step="any" min="0" max="24" placeholder=" " value="0.0"/>
+							<span class="highlight"></span>
+							<label>Tue Efforts</label>
+						</div>
+
+						<div class="floating-label"> 
+							<input type="number" id="wed" class="floating-input" name="wedEffort" step="any"  min="0" max="24" placeholder=" " value="0.0"/>
+							<span class="highlight"></span>
+							<label>Wed Efforts</label>
+						</div>
+
+						<div class="floating-label"> 
+							<input type="number" id="thu" class="floating-input" name="thuEffort"  step="any" min="0" max="24" placeholder=" " value="0.0"/>
+							<span class="highlight"></span>
+							<label>Thu Efforts</label>
+						</div>
+
+						<div class="floating-label"> 
+							<input type="number" id="fri" class="floating-input" name="friEffort" step="any"  min="0" max="24" placeholder=" " value="0.0"/>
+							<span class="highlight"></span>
+							<label>Fri Efforts</label>
+						</div>
+
+						<div class="floating-label"> 
+							<input type="number" id="sat" class="floating-input" name="satEffort"  step="any" min="0" max="24" placeholder=" " value="0.0"/>
+							<span class="highlight"></span>
+							<label>Sat Efforts</label>
+						</div>
+
+						<div class="floating-label"> 
+							<input type="number" id="sun" class="floating-input" name="sunEffort"  step="any" min="0" max="24" placeholder=" " value="0.0"/>
+							<span class="highlight"></span>
+							<label>Sun Efforts</label>
+						</div>
+						
+					</div>
+					<div class="form_inner_container3">
+						<input type="submit" value="Save" />
+					</div>
 				</div>
 			</div>
-		</form:form>
-<%--	<div class="footer">
-		<p>Copy right @ Tops Market</p>
-	</div>
-	--%>
+	</form>
+	
 </body>
 </html>

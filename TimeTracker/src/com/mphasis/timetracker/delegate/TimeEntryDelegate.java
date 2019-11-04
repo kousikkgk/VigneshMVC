@@ -54,4 +54,18 @@ public class TimeEntryDelegate {
 		return timeEntryService.viewDB(empId, stweek);
 		
 	}
+	public List<TimeBean> updateDB(int timeid,int empId,String empName,String wrName,String lcmName,String process,String activity,String activityDesc,String wkUnit,String wkUnitType,String remarks,java.sql.Timestamp stweek,double mon,double tue,double wed,double thu,double fri,double sat,double sun,String flag1,String flag2,String flag3,String flag4,String flag5,String flag6,String flag7,String updtFlag) throws SQLException 
+	{
+		return timeEntryService.updateDB(timeid,empId, empName, wrName, lcmName, process, activity, activityDesc, wkUnit, wkUnitType, remarks, stweek,mon, tue, wed, thu, fri, sat, sun, flag1, flag2, flag3, flag4, flag5, flag6, flag7, updtFlag);
+	}
+	public List<TimeBean> editDB(int timeid,int empId) throws SQLException
+	{
+		return timeEntryService.editDB(timeid, empId);
+		
+	}
+	public int deleteDB(int timeid) throws SQLException
+	{
+		return timeEntryService.deleteDB(timeid);
+		
+	}
 }

@@ -148,7 +148,7 @@ public class TimeEntryDaoImpl implements TimeEntryDao
 			ResultSet resultSet = stmt.executeQuery();
 			List<TimeBean> bean1 = new ArrayList<TimeBean>();
 			while (resultSet.next()) {
-				bean1.add(new TimeBean(projName, resultSet.getString("lcm_name"), resultSet.getString("wr_name"),resultSet.getString("activity"), resultSet.getString("work_unit"), Double.parseDouble(resultSet.getString("mon")), Double.parseDouble(resultSet.getString("tue")), Double.parseDouble(resultSet.getString("wed")), Double.parseDouble(resultSet.getString("thu")), Double.parseDouble(resultSet.getString("fri")), Double.parseDouble(resultSet.getString("sat")), Double.parseDouble(resultSet.getString("sun"))));
+				bean1.add(new TimeBean(resultSet.getInt("time_id"),projName, resultSet.getString("lcm_name"), resultSet.getString("wr_name"),resultSet.getString("activity"), resultSet.getString("work_unit"), Double.parseDouble(resultSet.getString("mon")), Double.parseDouble(resultSet.getString("tue")), Double.parseDouble(resultSet.getString("wed")), Double.parseDouble(resultSet.getString("thu")), Double.parseDouble(resultSet.getString("fri")), Double.parseDouble(resultSet.getString("sat")), Double.parseDouble(resultSet.getString("sun"))));
 				impl.setTimebeanimpl(bean1);
 			}
 		} catch (SQLException e) {
@@ -200,7 +200,7 @@ public int getprojectId(int empId)
 }
 
 @Override
-	public List<TimeBean> insertDB(int empId, String empName, String wrName, String lcmName, String process,
+public List<TimeBean> insertDB(int empId, String empName, String wrName, String lcmName, String process,
 			String activity, String activityDesc, String wkUnit, String wkUnitType, String remarks,java.sql.Timestamp stweek,
 			double mon, double tue, double wed, double thu, double fri, double sat, double sun, String flag1,
 			String flag2, String flag3, String flag4, String flag5, String flag6, String flag7, String updtFlag)
@@ -266,6 +266,116 @@ public int getprojectId(int empId)
 		impl.setTimebeanimpl(bean1);
 		return impl.getTimebeanimpl();
 	}
+
+@Override
+public List<TimeBean> updateDB(int timeid,int empId, String empName, String wrName, String lcmName, String process,
+			String activity, String activityDesc, String wkUnit, String wkUnitType, String remarks,java.sql.Timestamp stweek,
+			double mon, double tue, double wed, double thu, double fri, double sat, double sun, String flag1,
+			String flag2, String flag3, String flag4, String flag5, String flag6, String flag7, String updtFlag)
+			throws SQLException {
+		
+		int projId=getprojectId(empId);
+		String projName=getprojName(empId);
+		
+		String query="update timeentries set project_id=?, emp_id=?,emp_name=?, wr_name=?, lcm_name=?, process=?, activity=?, activity_desc=?, work_unit=?, work_unit_type=?, remarks=?, start_week=?, mon=?, tue=?, wed=?, thu=?, fri=?, sat=?, sun=?, flag1=?, flag2=?, flag3=?, flag4=?, flag5=?, flag6=?, flag7=?, update_flag=? where time_id=?";
+		PreparedStatement st = dataSource.getConnection().prepareStatement(query);
+		st.setInt(1, projId);
+        st.setInt(2, empId);
+        st.setString(3, empName);
+        st.setString(4, wrName);
+        st.setString(5, lcmName);
+        st.setString(6, process);
+        st.setString(7, activity);
+        st.setString(8, activityDesc);
+        st.setString(9, wkUnit);
+        st.setString(10, wkUnitType);
+        st.setString(11, remarks);
+        st.setTimestamp(12, stweek);
+        //st.setDate(12, (java.sql.Date)session.getAttribute("stDate"));
+        st.setDouble(13, mon);
+        st.setDouble(14,tue);
+        st.setDouble(15,wed);
+        st.setDouble(16,thu);
+        st.setDouble(17,fri);
+        st.setDouble(18,sat);
+        st.setDouble(19,sun);
+        if (mon==0.0)
+			st.setString(20, "N");
+		else
+			st.setString(20, "Y");
+    	if (tue==0.0)
+			st.setString(21, "N");
+		else
+			st.setString(21, "Y");
+    	if (wed==0.0)
+			st.setString(22, "N");
+		else
+			st.setString(22, "Y");
+    	if (thu==0.0)
+			st.setString(23, "N");
+		else
+			st.setString(23, "Y");
+    	if (fri==0.0)
+			st.setString(24, "N");
+		else
+			st.setString(24, "Y");
+    	if (sat==0.0)
+			st.setString(25, "N");
+		else
+			st.setString(25, "Y");
+    	if (sun==0.0)
+			st.setString(26, "N");
+		else
+			st.setString(26, "Y");
+    	st.setString(27, "Y");
+    	st.setInt(28, timeid);
+    	st.executeUpdate();
+    	List<TimeBean> bean1 = new ArrayList<TimeBean>();
+		TimeBeanImpl impl=new TimeBeanImpl();
+		bean1=viewDB(empId, stweek);
+		impl.setTimebeanimpl(bean1);
+		return impl.getTimebeanimpl();
+	}
+
+@Override
+public List<TimeBean> editDB(int timeid,int empId) {
+	String updatequery = "select * from timeentries where time_id = ? ";
+	
+	PreparedStatement stmt;
+	String projName=getprojName(empId);
+	TimeBeanImpl impl=new TimeBeanImpl();
+	try {
+		stmt = dataSource.getConnection().prepareStatement(updatequery);
+		stmt.setInt(1, timeid);
+		ResultSet resultSet = stmt.executeQuery();
+		List<TimeBean> bean1 = new ArrayList<TimeBean>();
+		while (resultSet.next()) {
+			bean1.add(new TimeBean(resultSet.getInt("time_id"),projName, resultSet.getString("lcm_name"), resultSet.getString("wr_name"),resultSet.getString("activity"), resultSet.getString("work_unit"), Double.parseDouble(resultSet.getString("mon")), Double.parseDouble(resultSet.getString("tue")), Double.parseDouble(resultSet.getString("wed")), Double.parseDouble(resultSet.getString("thu")), Double.parseDouble(resultSet.getString("fri")), Double.parseDouble(resultSet.getString("sat")), Double.parseDouble(resultSet.getString("sun"))));
+			impl.setTimebeanimpl(bean1);
+		}
+	} catch (SQLException e) {
+		e.printStackTrace();
+	}
+	System.out.println("updateDB "+impl.getTimebeanimpl());
+	return impl.getTimebeanimpl();
+}
+
+@Override
+public int deleteDB(int timeid) {
+	String projnamequery = "delete from timeentries where time_id= ? ";
+	
+	PreparedStatement prjnamest;
+	try {
+		prjnamest = dataSource.getConnection().prepareStatement(projnamequery);
+		prjnamest.setInt(1, timeid);
+		//ResultSet rs1=
+		int row=prjnamest.executeUpdate();
+		System.out.println("Rows affected: "+row);
+	} catch (SQLException e) {
+		e.printStackTrace();
+	}
+	return 0;
+}
 
 	
 }

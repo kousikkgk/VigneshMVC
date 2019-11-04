@@ -1,10 +1,8 @@
 package com.mphasis.timetracker.viewBean;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class TimeBean 
 {
+	private int timeid;
 	private String projectname;
 	private String processname;
 	private String requestname;
@@ -89,9 +87,10 @@ public class TimeBean
 	public void setSun(double sun) {
 		this.sun = sun;
 	}
-	public TimeBean(String projectname, String processname, String requestname, String activityname,
+	public TimeBean(int timeid, String projectname, String processname, String requestname, String activityname,
 			String workunitname, double mon, double tue, double wed, double thu, double fri, double sat, double sun) {
 		super();
+		this.timeid=timeid;
 		this.projectname = projectname;
 		this.processname = processname;
 		this.requestname = requestname;
@@ -104,6 +103,19 @@ public class TimeBean
 		this.fri = fri;
 		this.sat = sat;
 		this.sun = sun;
+	}
+	public int getTimeid() {
+		return timeid;
+	}
+	public void setTimeid(int timeid) {
+		this.timeid = timeid;
+	}
+	@Override
+	public String toString() {
+		return "TimeBean [timeid=" + timeid + ", projectname=" + projectname + ", processname=" + processname
+				+ ", requestname=" + requestname + ", activityname=" + activityname + ", workunitname=" + workunitname
+				+ ", mon=" + mon + ", tue=" + tue + ", wed=" + wed + ", thu=" + thu + ", fri=" + fri + ", sat=" + sat
+				+ ", sun=" + sun + "]";
 	}
 	
 }

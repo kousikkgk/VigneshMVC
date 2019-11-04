@@ -2,11 +2,13 @@ package com.mphasis.timetracker.viewBean;
 
 public class TimeEntryBean 
 {
-	private String projectname;
+	private int timeidtext;
+	private int timeidhidden;
+	private String projectName;
 	private String processName;
-	private String wrkReqName;
-	private String activity;
-	private String wrkUnit;
+	private String requestName;
+	private String activityName;
+	private String wrkunitName;
 	private double monEffort;
 	private double tueEffort;
 	private double wedEffort;
@@ -15,11 +17,23 @@ public class TimeEntryBean
 	private double satEffort;
 	private double sunEffort;
 	
-	public String getProjectname() {
-		return this.projectname;
+	public int getTimeidtext() {
+		return timeidtext;
 	}
-	public void setProjectname(String projectName) {
-		this.projectname = projectName;
+	public void setTimeidtext(int timeidtext) {
+		this.timeidtext = timeidtext;
+	}
+	public int getTimeidhidden() {
+		return timeidhidden;
+	}
+	public void setTimeidhidden(int timeidhidden) {
+		this.timeidhidden = timeidhidden;
+	}
+	public String getProjectName() {
+		return projectName;
+	}
+	public void setProjectName(String projectName) {
+		this.projectName = projectName;
 	}
 	public String getProcessName() {
 		return processName;
@@ -27,23 +41,23 @@ public class TimeEntryBean
 	public void setProcessName(String processName) {
 		this.processName = processName;
 	}
-	public String getWrkReqName() {
-		return wrkReqName;
+	public String getRequestName() {
+		return requestName;
 	}
-	public void setWrkReqName(String wrkReqName) {
-		this.wrkReqName = wrkReqName;
+	public void setRequestName(String requestName) {
+		this.requestName = requestName;
 	}
-	public String getActivity() {
-		return activity;
+	public String getActivityName() {
+		return activityName;
 	}
-	public void setActivity(String activity) {
-		this.activity = activity;
+	public void setActivityName(String activityName) {
+		this.activityName = activityName;
 	}
-	public String getWrkUnit() {
-		return wrkUnit;
+	public String getWrkunitName() {
+		return wrkunitName;
 	}
-	public void setWrkUnit(String wrkUnit) {
-		this.wrkUnit = wrkUnit;
+	public void setWrkunitName(String wrkunitName) {
+		this.wrkunitName = wrkunitName;
 	}
 	public double getMonEffort() {
 		return monEffort;
@@ -87,5 +101,14 @@ public class TimeEntryBean
 	public void setSunEffort(double sunEffort) {
 		this.sunEffort = sunEffort;
 	}
+	@Override
+	public String toString() {
+		return "TimeEntryBean [timeidtext=" + timeidtext + ", timeidhidden=" + timeidhidden + ", projectName="
+				+ projectName + ", processName=" + processName + ", requestName=" + requestName + ", activityName="
+				+ activityName + ", wrkunitName=" + wrkunitName + ", monEffort=" + monEffort + ", tueEffort="
+				+ tueEffort + ", wedEffort=" + wedEffort + ", thuEffort=" + thuEffort + ", friEffort=" + friEffort
+				+ ", satEffort=" + satEffort + ", sunEffort=" + sunEffort + "]";
+	}
 	
+		
 }

@@ -1,7 +1,6 @@
 package com.mphasis.timetracker.controller;
 
 import java.sql.SQLException;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -15,188 +14,183 @@ import org.json.simple.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.mphasis.timetracker.delegate.TimeEntryDelegate;
-import com.mphasis.timetracker.viewBean.LoginBean;
 import com.mphasis.timetracker.viewBean.TimeBean;
 import com.mphasis.timetracker.viewBean.TimeEntryBean;
 
 @Controller
-public class TimeEntryController {
+public class TimeEntryController
+{	
 	@Autowired
 	private TimeEntryDelegate timeEntryDelegate;
 	java.sql.Timestamp stTimestamp, endTimestamp = null;
-
-	@RequestMapping(value = "/welcome", method = RequestMethod.GET)
-	public ModelAndView displayLogin(HttpSession session, HttpServletRequest request, HttpServletResponse response,TimeEntryBean timeEntryBean,Model model) {
-		System.out.println("view2");
+	
+	@RequestMapping("/welcome")
+	public ModelAndView displayLogin(HttpSession session, HttpServletRequest request, HttpServletResponse response,
+			TimeEntryBean timeEntryBean, Model model) {
 		ModelAndView model1 = new ModelAndView("welcome");
-		model1.addObject("timeEntryBean", timeEntryBean);
-		//model.a
-		//model.addObject("timeEntryBean", timeEntryBean);
+//		model1.addObject("timeEntryBean", timeEntryBean);
 		model1.addObject("loggedInUser", session.getAttribute("empName") + " [" + session.getAttribute("id") + " ]");
 		return model1;
 	}
-
-	@RequestMapping("/project")
+	
+	@RequestMapping("/logout")
+	public String logOut(HttpSession session) 
+	{
+		session.invalidate();
+		return "redirect:/"; 
+	}
+	
+	@RequestMapping("/editrow")
 	@ResponseBody
-	public String getPrjectName(HttpServletRequest request, HttpServletResponse response, HttpSession session) {
-		// String prosResp=request.getParameter("get_member");
-		response.setContentType("application/json");
-		response.setCharacterEncoding("utf-8");
-		JSONArray jArray = new JSONArray();
-		List<String> projdbList;
-		HashMap<String, String> map = null;
+	public String editRow(@RequestParam("timeiddata") int timeId,HttpSession session) {
+		JSONArray jsonArray=null;
+		int empId=0;
+		List<TimeBean> listEdit=null;
+
+		empId = Integer.parseInt((String) session.getAttribute("id"));
+		jsonArray = new JSONArray();
+		
 		try {
-			projdbList = timeEntryDelegate.projectname(session);
-			System.out.println(projdbList);
-			for (String str : projdbList) {
-				map = new HashMap<String, String>();
-				map.put("name", str);
-				jArray.add(map);
-			}
+			listEdit = timeEntryDelegate.editDB(timeId, empId);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return jArray.toString();
-	}
-
-	@RequestMapping("/process")
-	@ResponseBody
-	public String getProcessName(HttpServletRequest request, HttpServletResponse response, HttpSession session) {
-		String prosResp = request.getParameter("get_member");
-		response.setContentType("application/json");
-		response.setCharacterEncoding("utf-8");
-		JSONArray jArray = new JSONArray();
-		List<String> projdbList;
-		try {
-			projdbList = timeEntryDelegate.processName(session, prosResp);
-			System.out.println(projdbList);
-			for (String str : projdbList) {
-				HashMap<String, String> map = new HashMap<String, String>();
-				map.put("name", str);
-				jArray.add(map);
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
+		
+		for(TimeBean str:listEdit) 
+		{
+			HashMap<Object,Object> map=new HashMap<Object, Object>();
+			map.put("projectname", str.getProjectname());
+			map.put("processname", str.getProcessname());
+			map.put("requestname", str.getRequestname());
+			map.put("activity", str.getActivityname());
+			map.put("workunit", str.getWorkunitname());
+			map.put("mon", str.getMon());
+			map.put("tue", str.getTue());
+			map.put("wed", str.getWed());
+			map.put("thu", str.getThu());
+			map.put("fri", str.getFri());
+			map.put("sat", str.getSat());
+			map.put("sun", str.getSun());
+			map.put("edit", str.getTimeid());
+			map.put("del", str.getTimeid());
+			map.put("timeid", str.getTimeid());
+			jsonArray.add(map);
 		}
-		return jArray.toString();
+		return	jsonArray.toString();
 	}
-
-	@RequestMapping("/request")
-	@ResponseBody
-	public String getRequestsName(HttpServletRequest request, HttpServletResponse response, HttpSession session) {
-		String processName = request.getParameter("procsName");
-		String stDate = request.getParameter("stDate");
-		String endDate = request.getParameter("endDate");
-		session.setAttribute("stDate", stDate);
-		response.setContentType("application/json");
-		response.setCharacterEncoding("utf-8");
-		JSONArray jArray = new JSONArray();
-
-		List<String> projdbList;
+	
+	@RequestMapping("/deleterow")
+	public String deleteRow(@RequestParam("timeiddata") int timeId,HttpServletResponse response,HttpSession session) 
+	{
 		try {
-			projdbList = timeEntryDelegate.wrkRequest(session, processName, stDate, endDate);
-			System.out.println(projdbList);
-			for (String str : projdbList) {
-				HashMap<String, String> map = new HashMap<String, String>();
-				map.put("name", str);
-				jArray.add(map);
+			timeEntryDelegate.deleteDB(timeId);
+			} catch (SQLException e) {
+				e.printStackTrace();
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return jArray.toString();
+			return "redirect:/viewdbdata";
 	}
-
-	@RequestMapping("/activity")
+	@RequestMapping("/viewdbdata")
 	@ResponseBody
-	public String getActivityName(HttpServletRequest request, HttpServletResponse response, HttpSession session) {
-		String reqName = request.getParameter("reqName");
-		response.setContentType("application/json");
-		response.setCharacterEncoding("utf-8");
-		JSONArray jArray = new JSONArray();
-		List<String> projdbList;
-		try {
-			projdbList = timeEntryDelegate.activity(session, reqName);
-			System.out.println(projdbList);
-			for (String str : projdbList) {
-				HashMap<String, String> map = new HashMap<String, String>();
-				map.put("name", str);
-				jArray.add(map);
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return jArray.toString();
-	}
-
-	@RequestMapping("/wrkunit")
-	@ResponseBody
-	public String getWorkunit(HttpServletRequest request, HttpServletResponse response, HttpSession session) {
-		String activityName = request.getParameter("activity");
-		String processName = request.getParameter("process");
-		System.out.println(activityName + ">>>>" + processName);
-		response.setContentType("application/json");
-		response.setCharacterEncoding("utf-8");
-		JSONArray jArray = new JSONArray();
-		List<String> projdbList;
-		try {
-			projdbList = timeEntryDelegate.wrkUnit(activityName, processName);
-			System.out.println(projdbList);
-			for (String str : projdbList) {
-				HashMap<String, String> map = new HashMap<String, String>();
-				map.put("name", str);
-				jArray.add(map);
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return jArray.toString();
-	}
-
-	@RequestMapping(value = "/save", method = RequestMethod.POST)
-	public String getformData(HttpServletRequest request, HttpServletResponse response, HttpSession session,
-			Model model1, @ModelAttribute("timeEntryBean") TimeEntryBean timeEntryBean,
-			@ModelAttribute("loginBean") LoginBean loginBean,Model saveModel,RedirectAttributes redir) {
-		// model.addObject("loggedInUser", session.getAttribute("empName")+"
-		// ["+session.getAttribute("id")+" ]");
-		model1.addAttribute("loggedInUser", session.getAttribute("empName") + " [" + session.getAttribute("id") + " ]");
-		System.out.println(request.getParameter("json"));
-		ModelAndView model = new ModelAndView("welcome");
+	public String viewDBData(HttpServletResponse response,HttpSession session) {
+		JSONArray jsonArray=null;
+		int empId=0;
 		Date parsedDate = null;
-		System.out.println();
-		int empId = Integer.parseInt((String) session.getAttribute("id"));
-		String empName = (String) session.getAttribute("empName");
-		String wrName = timeEntryBean.getWrkReqName();
-		String lcmName = timeEntryBean.getProcessName();
-		String process = "Monitor System Operations";
-		String activity = timeEntryBean.getActivity();
-		String activityDesc = "Monitor System Operations - Monitor Application";
-		String wrkUnit = timeEntryBean.getWrkUnit();
-		String WrkUntType = "Usecase";
-		String remarks = "remarks";
+		List<TimeBean> viewData = null;
+		
+		response.setContentType("application/json");
+		response.setCharacterEncoding("utf-8");
+		jsonArray = new JSONArray();
+		
+		//Convert String Date into Sql TimeStamp
 		SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
 		try {
 			parsedDate = dateFormat.parse((String) session.getAttribute("stDate"));
+			System.out.println(parsedDate);
 		} catch (Exception e) {
 
 		}
 		stTimestamp = new java.sql.Timestamp(parsedDate.getTime());
-		double mon = timeEntryBean.getMonEffort();
-		double tue = timeEntryBean.getTueEffort();
-		double wed = timeEntryBean.getWedEffort();
-		double thu = timeEntryBean.getThuEffort();
-		double fri = timeEntryBean.getFriEffort();
-		double sat = timeEntryBean.getSatEffort();
-		double sun = timeEntryBean.getSunEffort();
+		try {
+			empId = Integer.parseInt((String) session.getAttribute("id"));
+			System.out.println(empId+"--"+stTimestamp);
+				viewData = timeEntryDelegate.viewDB(empId, stTimestamp);
+				if(viewData!=null) {
+					for (TimeBean str : viewData) {
+						HashMap<Object, Object> map = new HashMap<>();
+						map.put("projectname", str.getProjectname());
+						map.put("processname", str.getProcessname());
+						map.put("requestname", str.getRequestname());
+						map.put("activity", str.getActivityname());
+						map.put("workunit", str.getWorkunitname());
+						map.put("mon", str.getMon());
+						map.put("tue", str.getTue());
+						map.put("wed", str.getWed());
+						map.put("thu", str.getThu());
+						map.put("fri", str.getFri());
+						map.put("sat", str.getSat());
+						map.put("sun", str.getSun());
+						map.put("edit", str.getTimeid());
+						map.put("del", str.getTimeid());
+						map.put("timeid", str.getTimeid());
+						jsonArray.add(map);
+					}
+				}
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		return jsonArray.toString();
+	}
+	@RequestMapping("/save")
+	public String saveFormData(TimeEntryBean timeEntryBean,HttpSession session)
+	{
+		Date parsedDate = null;
+		int timeidhidden,timeId,empId;
+		String empName,wrName,lcmName,process,activity,activityDesc,wrkUnit,wrkUntType,remarks;
 		String flag1, flag2, flag3, flag4, flag5, flag6, flag7, updtFlag;
+		double mon,tue,wed,thu,fri,sat,sun;
+		SimpleDateFormat dateFormat;
+		List<TimeBean> impl = null;
+		timeId=timeEntryBean.getTimeidtext();
+		timeidhidden=timeEntryBean.getTimeidhidden();
+		System.out.println("TIME-ID(Text): "+timeId);
+		System.out.println("TIME-ID(Hidden): "+timeidhidden);
+		
+		empId = Integer.parseInt((String) session.getAttribute("id"));
+		empName = (String) session.getAttribute("empName");
+		wrName = timeEntryBean.getActivityName();
+		lcmName = timeEntryBean.getProcessName();
+		process = "Monitor System Operations";
+		activity = timeEntryBean.getActivityName();
+		activityDesc = "Monitor System Operations - Monitor Application";
+		wrkUnit = timeEntryBean.getActivityName();
+		wrkUntType = "Usecase";
+		remarks = "remarks";
+		
+		dateFormat = new SimpleDateFormat("MM/dd/yyyy");
+		System.out.println(session.getAttribute("stDate"));
+		try {
+			parsedDate = dateFormat.parse((String) session.getAttribute("stDate"));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		stTimestamp = new java.sql.Timestamp(parsedDate.getTime());
+		
+		mon = timeEntryBean.getMonEffort();
+		tue = timeEntryBean.getTueEffort();
+		wed = timeEntryBean.getWedEffort();
+		thu = timeEntryBean.getThuEffort();
+		fri = timeEntryBean.getFriEffort();
+		sat = timeEntryBean.getSatEffort();
+		sun = timeEntryBean.getSunEffort();
+		
 		if (mon == 0.0)
 			flag1 = "N";
 		else
@@ -231,52 +225,38 @@ public class TimeEntryController {
 		else
 			flag7 = "Y";
 		updtFlag = "Y";
-
-		List<TimeBean> impl = null;
-		try {
-			timeEntryDelegate.insertDB(empId, empName, wrName, lcmName, process, activity, activityDesc, wrkUnit,
-					WrkUntType, remarks, stTimestamp, mon, tue, wed, thu, fri, sat, sun, flag1, flag2, flag3, flag4,
-					flag5, flag6, flag7, updtFlag);
-			impl=timeEntryDelegate.viewDB(empId, stTimestamp);
-		} catch (SQLException e1) {
-			e1.printStackTrace();
+		
+		if (timeidhidden==0) {
+			System.out.println("inside save method");
+			try {
+				timeEntryDelegate.insertDB(empId, empName, wrName, lcmName, process, activity, activityDesc, wrkUnit,
+						wrkUntType, remarks, stTimestamp, mon, tue, wed, thu, fri, sat, sun, flag1, flag2, flag3, flag4,
+						flag5, flag6, flag7, updtFlag);
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
+		}else {
+			System.out.println("inside update method");
+			try {
+				timeEntryDelegate.updateDB(timeidhidden,empId, empName, wrName, lcmName, process, activity, activityDesc, wrkUnit,
+						wrkUntType, remarks, stTimestamp, mon, tue, wed, thu, fri, sat, sun, flag1, flag2, flag3, flag4,
+						flag5, flag6, flag7, updtFlag);
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
 		}
-		System.out.println(impl);
-		//redir.addAttribute("model", impl);
-		redir.addFlashAttribute("model", impl);
-		//saveModel.addAttribute("model", impl);
-		//model.addObject("model", impl);
+		
 		return "redirect:/welcome";
 	}
-
-	@RequestMapping(value = "/view", method = RequestMethod.GET)
-	public String getElement(HttpServletRequest request, HttpServletResponse response, HttpSession session,
-		TimeEntryBean timeEntryBean,RedirectAttributes redir) {
-		System.out.println("Enter View Method in TimeEntryController Class");
-		// ModelAndView model = new ModelAndView("login");
-		String stWeek = request.getParameter("stweek");
-		System.out.println(stWeek);
-		int empId = Integer.parseInt((String) session.getAttribute("id"));
-		Date parsedDate = null;
-		SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
-		List<TimeBean> viewData = null;
-		try {
-			parsedDate = dateFormat.parse(stWeek);
-			stTimestamp = new java.sql.Timestamp(parsedDate.getTime());
-			viewData = timeEntryDelegate.viewDB(empId, stTimestamp);
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} catch (ParseException e) {
-			e.printStackTrace();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		//System.out.println("VIEW " + viewData);
-		//ModelAndView model=new ModelAndView("welcome", "model", viewData);
-		redir.addAttribute("model", viewData);
-		//model.addAttribute("model", viewData);
-		//System.out.println("View Model: "+model);
-		return "welcome";
-
-	}
+	
+	@RequestMapping("/dateview")
+	public String dateView(@RequestParam("stweek") String stDate,HttpSession session,HttpServletResponse response) {
+		
+		//if(session.getAttribute("stDate")!=null) {
+			session.removeAttribute("stDate");
+		//}else {
+			session.setAttribute("stDate", stDate);
+		//}
+		return "redirect:/viewdbdata";
+	}	
 }
